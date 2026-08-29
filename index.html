@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barnen möter redan AI! Är förskolan redo? - Förskoleförvaltningen Göteborgs Stad</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* ===== BASE STYLES ===== */
+:root {
+    --primary-color: black;
+    --primary-light: #4d94ff;
+    --primary-dark: #004080;
+    --secondary-color: #80b3ff;
+    --accent-color: #00aaff;
+    --white: #ffffff;
+    --light-gray: #f5f7fa;
+    --medium-gray: #e0e6ed;
+    --dark-gray: #6c757d;
+    --text-dark: #333333;
+    --text-light: #666666;
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4rem;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
+
+/* Reset and base styles */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--white);
+    overflow-x: hidden;
+}
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 600; line-height: 1.2; color: var(--text-dark); }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+p { margin-bottom: var(--spacing-sm); color: var(--text-light); }
+.large-text { font-size: 1.1rem; color: var(--text-dark); margin-bottom: var(--spacing-md); }
+
+/* ==========================================================
+   HERO
+========================================================== */
+.hero {
+    background: linear-gradient(180deg, #eef9ff 0%, #dff3ff 100%);
+    padding: 45px 0 50px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid #d6ebf7;
+}
+.hero-overlay{
+    position:relative;
+    z-index:10;
+    width:100%;
+}
+.logo{
+    max-width:1000px;
+    margin:auto;
+    text-align:center;
+    padding:20px;
+}
+.logo h1{
+    font-size:5rem;
+    font-weight:800;
+    color:#005b96;
+    line-height:1;
+    letter-spacing:-2px;
+    margin-bottom:15px;
+}
+.logo h1::after{
+    content:"";
+    display:block;
+    width:180px;
+    height:4px;
+    background:#69bff5;
+    border-radius:10px;
+    margin:22px auto 0;
+}
+.logo .subtitle{
+    font-size:1.8rem;
+    color:#4a6b80;
+    font-weight:400;
+}
+.hero-content{ display:none; }
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background-color: var(--white);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-sm) 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex; 
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.navbar.scrolled { box-shadow: var(--shadow-md); padding: var(--spacing-xs) 0; }
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-md);
+    justify-content: center;
+    overflow-x: auto;
+}
+.nav-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+.nav-links a:hover { background-color: var(--primary-light); color: var(--white); }
+.nav-links a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width var(--transition-fast);
+}
+.nav-links a:hover::after { width: 100%; }
+
+.nav-item {
+    display: flex;
+    align-items: center;
+ }
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+.mobile-menu-overlay.active {
+    display: flex;
+}
+.mobile-menu-content {
+    background-color: var(--white);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    max-width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+}
+.mobile-menu-content .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+}
+.mobile-menu-content .nav-links a {
+    padding: var(--spacing-sm);
+    display: block;
+}
+.mobile-menu-close {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* ===== SECTIONS ===== */
+.section { padding: var(--spacing-xl) 0; }
+.section-header { text-align: center; margin-bottom: var(--spacing-lg); }
+.section-header h2, .section-header h3 { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm); }
+.section-icon { color: var(--primary-color); font-size: 1.5rem; }
+.section-subtitle { color: var(--text-light); font-size: 1.1rem; font-style: italic; }
+.bg-light { background-color: var(--light-gray); }
+
+/* ===== CONTENT LAYOUT ===== */
+.content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); align-items: center; margin-top: var(--spacing-lg); }
+.text-content { max-width: 600px; }
+.text-content.centered { text-align: center; max-width: 100%; margin: 0 auto; }
+.text-content.left { max-width: 100%; text-align: left; }
+
+/* ===== PLACEHOLDERS ===== */
+.image-placeholder { display: flex; justify-content: center; align-items: center; }
+.placeholder-card {
+    background-color: var(--white);
+    border: 2px dashed var(--medium-gray);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+    box-shadow: var(--shadow-sm);
+}
+.placeholder-card.large { min-height: 300px; padding: var(--spacing-xl); }
+.placeholder-card i { font-size: 3rem; color: var(--medium-gray); }
+.placeholder-card p { color: var(--dark-gray); font-style: italic; }
+
+/* ===== CARDS ===== */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md); margin-top: var(--spacing-lg); }
+.cards-grid.three-cols { grid-template-columns: repeat(3, 1fr); }
+.card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    border: 1px solid var(--medium-gray);
+    transition: all var(--transition-normal);
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.card-icon { font-size: 2.5rem; color: var(--primary-color); margin-bottom: var(--spacing-sm); }
+.card h3 { color: var(--primary-color); margin-bottom: var(--spacing-xs); }
+.card p { color: var(--text-light); font-size: 0.95rem; }
+
+/* ===== PARTICIPANTS ===== */
+.participants-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2rem;
+}
+.participant-card {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.last-card {
+    grid-column: 2;
+}
+.participant-card:hover { transform: translateX(4px); box-shadow: var(--shadow-md); border-color: var(--primary-light); }
+.participant-avatar {
+    width: 60px; height: 60px;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.participant-info, .participant-dept  {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.participant-info h4 { color: var(--primary-color); margin-bottom: var(--spacing-xs); }
+.participant-title { color: var(--text-dark); font-weight: 600; margin-bottom: var(--spacing-xs); }
+.participant-dept { color: var(--text-light); font-size: 0.9rem; }
+
+/* ===== TIMELINE ===== */
+.timeline { position: relative; margin: var(--spacing-lg) 0; padding-left: var(--spacing-xl); }
+.timeline::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background-color: var(--primary-color); }
+.timeline-item { position: relative; margin-bottom: var(--spacing-lg); }
+.timeline-marker {
+    position: absolute; left: -60px;
+    width: 40px; height: 40px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    color: var(--white); font-size: 1rem; z-index: 1;
+}
+.timeline-content {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--medium-gray);
+    transition: all var(--transition-normal);
+}
+.timeline-content:hover { transform: translateX(4px); box-shadow: var(--shadow-md); border-color: var(--primary-light); }
+.timeline-content h4 { color: var(--primary-color); margin-bottom: var(--spacing-xs); }
+.timeline-content p { color: var(--text-light); }
+
+/* ===== LISTS ===== */
+.activity-list { list-style: none; margin: var(--spacing-md) 0; }
+.activity-list li { display: flex; align-items: flex-start; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm); padding-left: var(--spacing-sm); color: var(--text-dark); }
+.activity-list li i { color: var(--primary-color); margin-top: 2px; }
+.learning-list { list-style: none; margin: var(--spacing-md) 0; }
+.learning-list li { margin-bottom: var(--spacing-xs); padding-left: var(--spacing-sm); position: relative; }
+.learning-list li::before { content: '•'; color: var(--primary-color); position: absolute; left: 0; }
+
+/* ===== HIGHLIGHT BOX ===== */
+.highlight-box {
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+.highlight-icon { font-size: 2rem; flex-shrink: 0; }
+.highlight-content p { color: var(--white); margin-bottom: var(--spacing-sm); line-height: 1.8; }
+
+/* ===== PARTNERS ===== */
+.partners-grid { display: flex; justify-content: center; gap: var(--spacing-lg); margin: var(--spacing-lg) 0; flex-wrap: wrap; }
+.partner-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--medium-gray);
+    min-width: 200px;
+    transition: all var(--transition-normal);
+}
+.partner-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.partner-flag { font-size: 3rem; margin-bottom: var(--spacing-sm); }
+.partner-card h4 { color: var(--primary-color); margin-bottom: var(--spacing-xs); }
+.partner-card p { color: var(--text-light); }
+
+/* ===== CONTACT ===== */
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg); margin: var(--spacing-lg) 0; }
+.contact-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--medium-gray);
+    transition: all var(--transition-normal);
+}
+.contact-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.contact-avatar {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-size: 2rem;
+    margin: 0 auto var(--spacing-md);
+}
+.contact-info h4 { color: var(--primary-color); margin-bottom: var(--spacing-xs); }
+.contact-title { color: var(--text-dark); font-weight: 600; margin-bottom: var(--spacing-xs); }
+.contact-dept { color: var(--text-light); font-size: 0.9rem; margin-bottom: var(--spacing-md); }
+.contact-email { color: var(--primary-color); font-weight: 500; display: flex; align-items: center; justify-content: center; gap: var(--spacing-xs); flex-direction: column; }
+.contact-email i { font-size: 0.9rem; }
+
+/* ===== FOOTER ===== */
+.footer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--medium-gray);
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+}
+.footer-logo h3 { color: var(--primary-color); margin-bottom: var(--spacing-xs); }
+.footer-logo p { color: var(--text-light); }
+.footer-details p { display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: var(--spacing-xs); color: var(--text-light); }
+.footer-details i { color: var(--primary-color); }
+
+/* ===== BACK TO TOP ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+}
+.back-to-top.visible { opacity: 1; visibility: visible; }
+.back-to-top:hover { background-color: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .content-grid { grid-template-columns: 1fr; gap: var(--spacing-md); }
+    .image-placeholder { order: -1; }
+    .cards-grid.three-cols { grid-template-columns: 1fr; }
+    .timeline::before { left: 10px; }
+    .timeline-item { padding-left: var(--spacing-md); }
+    .timeline-marker { left: -40px; width: 30px; height: 30px; font-size: 0.8rem; }
+    .table-header, .table-row { grid-template-columns: 1fr; gap: var(--spacing-xs); }
+    .table-cell { padding: var(--spacing-xs); }
+}
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    .hero { padding: var(--spacing-lg) 0; }
+    .nav-links { display: none; }
+    .mobile-menu-btn { display: block; }
+    .participants-grid { grid-template-columns: repeat(2, 1fr); }
+    .participant-card { grid-column: span 1; }
+    .participant-card, .contact-card { flex-direction: column; text-align: center; }
+    .participant-avatar, .contact-avatar { margin-bottom: var(--spacing-sm); }
+    .highlight-box { flex-direction: column; text-align: center; }
+    .partners-grid { flex-direction: column; align-items: center; }
+    .footer-info { flex-direction: column; text-align: center; }
+    .table-header { display: none; }
+    .table-row { border: 1px solid var(--medium-gray); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); }
+    .table-cell { padding: var(--spacing-xs) var(--spacing-sm); }
+}
+@media (max-width: 480px) {
+    .container { padding: 0 var(--spacing-sm); }
+    .section { padding: var(--spacing-md) 0; }
+    .btn-primary { padding: var(--spacing-xs) var(--spacing-md); font-size: 1rem; }
+    .contact-email { flex-direction: column; }
+    .participants-grid { grid-template-columns: 1fr; }
+}
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-overlay">
+            <div class="logo">
+                <h1>Barnen möter redan AI! Är förskolan redo?</h1>
+                <p class="subtitle">Förskoleförvaltningen Göteborgs Stad</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar" >
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li class="nav-item"><a href="#om-projektet">Om projektet</a></li>
+                <li class="nav-item"><a href="#syfte">Syfte</a></li>
+                <li class="nav-item"><a href="#deltagare">Deltagare</a></li>
+                <li class="nav-item"><a href="#bakgrund">Bakgrund</a></li>
+                <li class="nav-item"><a href="#bidrag">Förskoleförvaltningens bidrag</a></li>
+                <li class="nav-item"><a href="#lardomar">Lärdomar</a></li>
+                <li class="nav-item"><a href="#samarbete">Fortsatt samarbete</a></li>
+                <li class="nav-item"><a href="#kontakt">Kontakt</a></li>
+            </ul>
+            <button class="mobile-menu-btn" aria-label="Öppna meny">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay">
+        <div class="mobile-menu-content">
+            <button class="mobile-menu-close" aria-label="Stäng meny">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#om-projektet">Om projektet</a></li>
+                <li><a href="#syfte">Syfte</a></li>
+                <li><a href="#deltagare">Deltagare</a></li>
+                <li><a href="#bakgrund">Bakgrund</a></li>
+                <li><a href="#bidrag">Förskoleförvaltningens bidrag</a></li>
+                <li><a href="#lardomar">Lärdomar</a></li>
+                <li><a href="#samarbete">Fortsatt samarbete</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Om Projektet -->
+        <section id="om-projektet" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-globe"></i></span>Om projektet</h2>
+                    <p class="section-subtitle">Ett internationellt samarbete</p>
+                </div>
+                <div class="content">
+                    <p>
+                        Artificiell intelligens och ett snabbt informationsflöde påverkar barns vardag redan i tidig ålder och ställer nya krav på förskolans uppdrag. Barn behöver få möjlighet att utveckla medie- och informationskunnighet tidigt, och för att lyckas behöver vi fortsätta stärka kompetensen hos både rektorer och undervisande personal.
+                    </p>
+                    <p>
+                        I en tid då digitalisering, AI och snabbt föränderliga informationsflöden präglar barns uppväxtvillkor blir dessa områden alltmer centrala för förskolans utbildningsuppdrag och bildningsuppdrag.
+                    </p>
+                    <p>
+                        Mot denna bakgrund reste en delegation från förskoleförvaltningen med utvecklingsledare, rektorer och förskollärare till Lettland inom ramen för ett Nordplus Junior finansierat nordisk-baltiskt samarbete. Resan kombinerade studiebesök och gemensam planering inom projektet "Meaningful Use of AI and Digital Tools in Preschool - Strengthening Professional Practice, Children's Communication and Critical Thinking through Nordic-Baltic Cooperation", med fokus på hur nästa steg i samarbetet mellan Lettland, Estland, Litauen och Göteborg ska utformas.
+                    </p>
+                    <p>
+                        Förskolan i Göteborg drar nytta av konkreta metoder nära praktiken, ny inspiration från nordisk-baltiska perspektiv och ett stärkt arbete med likvärdighet och inkludering. Projektet kan också bidra till långsiktiga nätverk och ett gemensamt material som kan delas vidare i verksamheten.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Syfte -->
+        <section id="syfte" class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-bullseye"></i></span>Syfte med studieresan</h2>
+                </div>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-brain"></i></div>
+                        <h3>Kritiskt tänkande</h3>
+                        <p>Stärka utvecklingsarbetet kring barns kritiska tänkande och analysförmåga i möte med AI</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
+                        <h3>AI-kompetens</h3>
+                        <p>Stärka pedagogers AI-kompetens och förmåga att använda AI på ett medvetet, ansvarsfullt och pedagogiskt sätt</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-newspaper"></i></div>
+                        <h3>Medielitteracitet</h3>
+                        <p>Stärka förmågan att förstå, använda och kritiskt värdera information och digitala medier</p>
+                    </div>
+                </div>
+                <div>
+                    <p >
+                        Genom möten med Rigas förskoleadministration och studiebesök vid deras förskolor fick deltagarna en helhetsbild av hur dessa områden omsätts från strategi till praktisk undervisning.
+                    </p>
+                    <p >
+                        Syftet var även att lägga grunden för ett <strong>tvåårigt Nordplus Junior samarbete</strong> där en workshop genomfördes med representanter från Riga, Litauen och Estland.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deltagare -->
+        <section id="deltagare" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-users"></i></span>Deltagare</h2>
+                    <p class="section-subtitle">Delegationen från förskoleförvaltningen Göteborgs Stad</p>
+                </div>
+                <div class="participants-grid">
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Belinda Gyllenstig</h4>
+                            <p class="participant-title">Utvecklingsledare</p>
+                            <p class="participant-dept">Enheten Digitalisering och Innovation</p>
+                        </div>
+                    </div>
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Regina Enedahl</h4>
+                            <p class="participant-title">Utvecklingsledare</p>
+                            <p class="participant-dept">Enheten Digitalisering och Innovation</p>
+                        </div>
+                    </div>
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Malin Omland</h4>
+                            <p class="participant-title">Utvecklingsledare</p>
+                            <p class="participant-dept">Enhet samordning, avdelning ledning och styrning</p>
+                        </div>
+                    </div>
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Ines Hrkic</h4>
+                            <p class="participant-title">Rektor</p>
+                            <p class="participant-dept">Bergsjön 2; Kvadrantgatan 1 och Teleskopgatan 3Ä</p>
+                        </div>
+                    </div>
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Sejda Donlagic</h4>
+                            <p class="participant-title">Rektor</p>
+                            <p class="participant-dept">Liseberg 1; Rudedammsgatan 6B och Framnäsgatan 16</p>
+                        </div>
+                    </div>
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Pernilla Berg</h4>
+                            <p class="participant-title">Förskollärare</p>
+                            <p class="participant-dept">Kvadrantgatan 1</p>
+                        </div>
+                    </div>
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Ida Boström</h4>
+                            <p class="participant-title">Förskollärare</p>
+                            <p class="participant-dept">Framnäsgatan 16</p>
+                        </div>
+                    </div>
+                    <div class="participant-card">
+                        <div class="participant-avatar"><i class="fas fa-user"></i></div>
+                        <div class="participant-info">
+                            <h4>Fatme Kachache</h4>
+                            <p class="participant-title">Barnskötare</p>
+                            <p class="participant-dept">Framnäsgatan 16</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bakgrund -->
+        <section id="bakgrund" class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-history"></i></span>Projektets milstolpar</h2>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="timeline-content">
+                            <h4>Våren 2024</h4>
+                            <p>Enheten för digitalisering och innovation började utforska nordiska och europeiska samarbetsmöjligheter kopplade till medie- och informationskunnighet</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="timeline-content">
+                            <h4>Våren 2025</h4>
+                            <p>Flera digitala möten med representanter från Riga för att identifiera gemensamma utmaningar och utvecklingsbehov samt möjligheter till fördjupat projektsamarbete</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="timeline-content">
+                            <h4>Hösten 2025</h4>
+                            <p>Förskoleförvaltningen beviljades externa medel från Nordplus Junior för att genomföra studiebesök i Riga, Lettland. Studiebesöket utgjorde en del i ett långsiktigt och systematiskt internationellt utvecklingssamarbete där städerna tillsammans ska utforska och jämföra arbetssätt, metoder och strategier för att stärka barns kritiska tänkande, digitala ansvarstagande och förskolans pedagogiska uppdrag i en digital tid.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="timeline-content">
+                            <h4>Februari 2026</h4>
+                            <p>Ett tvåårigt samarbetsprojekt har beviljats av Nordplus Junior. Ett framtida utvecklingssamarbete har etablerats där fler nordisk-baltiska aktörer, såsom <strong>Tallinn i Estland</strong> och <strong>Panevėžys i Litauen</strong>, ingår.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Förskoleförvaltningens kunskapsbidrag under studiebesöket i Lettland -->
+        <section id="bidrag" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-hand-holding-heart"></i></span>Förskoleförvaltningens kunskapsbidrag under studiebesöket i Lettland</h2>
+                </div>
+                <div class="cards-grid three-cols">
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+                        <h3>Strategiskt perspektiv</h3>
+                        <p>Kompetens från två strategiska utvecklingsledare inom digitalisering och innovation</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <h3>Praktiskt perspektiv</h3>
+                        <p>Lednings- och verksamhetsnära perspektiv från två rektorer och två förskollärare</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
+                        <h3>Erfarenhetsutbyte</h3>
+                        <p>Ömsesidigt lärande och stärkt nordisk-baltiskt samarbete genom dialog</p>
+                    </div>
+                </div>
+                <div class="text-content left">
+                    <p class="large-text">Delegationen representerade både strategiskt och praktiskt utvecklingsarbete inom medialiteracy, digital kompetens, AI och kritiskt tänkande i förskolan. Deltagarna delade med sig av förvaltningens pågående arbete med digitala och analoga lärmiljöer, kompetensutvecklingsinsatser och metoder som prövats inom förskoleförvaltningen i Göteborg.</p>
+                    <span style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                        <p class="large-text">Ett av förskoleförvaltningens bidrag är MIK-templet för förskolan som är ett utbildningsmaterial som fokuserar på medie- och informationskunnighet (M(K). Här hittar du MIK-Templet</p>
+                        
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Viktiga lärdomar -->
+        <section id="lardomar" class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-lightbulb"></i></span>Viktiga lärdomar</h2>
+                    <p class="section-subtitle">Kunskaper och erfarenheter för Göteborgs Stad</p>
+                </div>
+<p>Studiebesöket gav fördjupade insikter i hur <strong>kritiskt tänkande, digital kompetens, medie- och informationskunnighet (MIK) samt artificiell intelligens (AI)</strong> kan integreras i förskolans undervisning och bidra till barns lärande och utveckling.</p>
+
+<p>Deltagarna konstaterade att många arbetssätt som utvecklar barns kritiska tänkande redan är en naturlig del av verksamheten i Göteborgs förskolor. Erfarenheterna från Riga bidrog samtidigt till att <strong>synliggöra, sätta ord på och vidareutveckla den egna pedagogiska praktiken</strong>, vilket skapade en ökad medvetenhet om hur arbetet kan stärkas och utvecklas.</p>
+
+<p>Studiebesöket gav också värdefulla perspektiv på likheter och skillnader mellan de svenska och lettiska utbildningssystemen. Särskilt väckte följande områden reflektion:</p>
+
+<ul class="learning-list">
+    <li>Synen på lärande och undervisning</li>
+    <li>Bedömning och uppföljning</li>
+    <li>Barns delaktighet och inflytande</li>
+    <li>Förskollärarens pedagogiska ledarskap</li>
+</ul>
+
+<p>Jämförelserna bidrog till ett kollegialt lärande och en fördjupad reflektion över den egna verksamheten. De stärkte också förståelsen för den svenska förskolans pedagogiska grund, där <strong>lek, utforskande, lärprocesser och barns inflytande</strong> utgör centrala utgångspunkter för undervisningen.</p>
+                    </div>
+                                 </div>
+                <div class="highlight-box">
+                    <div class="highlight-icon"><i class="fas fa-star"></i></div>
+                    <div class="highlight-content">
+                        <div><strong>En viktig lärdom</strong> är att fortsatt samarbete behöver bygga på gemensam reflektion, tydliga begrepp och dokumentation av hur perspektiv och arbetssätt utvecklas över tid. Erfarenheterna från Riga blir därför ett viktigt underlag för fortsatt nordisk-baltiskt samarbete kring barns kritiska tänkande och ansvarsfulla användning av teknik.</div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fortsatt samarbete -->
+        <section id="samarbete" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-hands-helping"></i></span>Fortsatt samarbete</h2>
+                </div>
+                <div class="text-content centered">
+                    <p class="large-text">Studiebesöket i Riga lade grunden för ett fortsatt och fördjupat samarbete.</p>
+                    <div class="partners-grid">
+                        <div class="partner-card">
+                            <h4>Riga, Lettland</h4>
+                            <p>Partnerförskolor</p>
+                        </div>
+                        <div class="partner-card">
+                            <h4>Tallinn, Estland</h4>
+                            <p>Partnerförskolor</p>
+                        </div>
+                        <div class="partner-card">
+                            <h4>Panevėžys, Litauen</h4>
+                            <p>Partnerförskolor</p>
+                        </div>
+                    </div>
+                    <p class="large-text">Tillsammans ska städerna utveckla och jämföra arbetssätt, metoder och strategier som stärker pedagogers kompetens inom medielitteracitet och AI samt ger barn förutsättningar att utveckla ett kritiskt tänkande och ett ansvarsfullt förhållningssätt till digitala verktyg.</p>
+                    <p class="large-text">Ansökan om ett tvåårigt Nordplus Junior samarbetsprojekt skickades in i februari 2026 och projektet blev beviljat medel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kontakt -->
+        <section id="kontakt" class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span class="section-icon"><i class="fas fa-envelope"></i></span>Kontakt</h2>
+                    <p class="section-subtitle">För frågor om studieresan och samarbetet</p>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-avatar"><i class="fas fa-user"></i></div>
+                        <div class="contact-info">
+                            <h4>Belinda Gyllenstig</h4>
+                            <p class="contact-title">Utvecklingsledare</p>
+                            <p class="contact-dept">Enhet digitalisering och innovation</p>
+                            <p class="contact-email"><a href="mailto:belinda.gyllenstig@goteborg.se"><i class="fas fa-envelope"></i><span>belinda.gyllenstig@goteborg.se</span></a></p>  
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-avatar"><i class="fas fa-user"></i></div>
+                        <div class="contact-info">
+                            <h4>Regina Enedahl</h4>
+                            <p class="contact-title">Utvecklingsledare</p>
+                            <p class="contact-dept">Enhet digitalisering och innovation</p>
+                            <p class="contact-email"><a href="mailto:regina.enedhal@goteborg.se"><i class="fas fa-envelope"></i><span>regina.enedahl@goteborg.se</span></a></p>    
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-avatar"><i class="fas fa-user"></i></div>
+                        <div class="contact-info">
+                            <h4>Malin Omland</h4>
+                            <p class="contact-title">Utvecklingsledare</p>
+                            <p class="contact-dept">Enhet samordning</p>
+                            <p class="contact-email"><a href="mailto:malin.omland@goteborg.se"><i class="fas fa-envelope"></i><span>malin.omland@goteborg.se</span></a></p> 
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <h3>Förskoleförvaltningen</h3>
+                        <p>Göteborgs Stad</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button id="back-to-top" class="back-to-top" aria-label="Till toppen">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu functionality
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const allNavLinks = document.querySelectorAll('.nav-links a');
+
+            function openMobileMenu() {
+                mobileMenuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileMenu() {
+                mobileMenuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', openMobileMenu);
+            }
+
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', closeMobileMenu);
+            }
+
+            // Close menu when clicking a link
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    closeMobileMenu();
+
+                    // Smooth scroll to section
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            const headerOffset = 80;
+                            const elementPosition = target.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Close menu when clicking outside
+            mobileMenuOverlay.addEventListener('click', function(e) {
+                if (e.target === mobileMenuOverlay) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Back to top button
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 300) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+
+                backToTopBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Keyboard accessibility for mobile menu
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenuOverlay.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
